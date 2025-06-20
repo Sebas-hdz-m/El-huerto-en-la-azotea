@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Huerto en la Azotea</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Dancing+Script:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Estilos adicionales que no son fácilmente aplicables con Tailwind o para ajustes finos */
+      body {
+        /* ¡Ahora usando Open Sans como fuente principal! */
+        font-family: "Open Sans", ui-sans-serif, system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+          "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+          "Segoe UI Symbol", "Noto Color Emoji";
+        /* AÑADE ESTA LÍNEA para cambiar el color del espacio sobrante */
+        background-color: #f2f7ed; /* Un verde muy claro, casi blanco */
+        overflow-x: hidden; /* Evita scroll horizontal al abrir el sidebar */
+      }
+      .custom-header {
+        background-color: #363a40; /* Color de fondo del header */
+      }
+
+      /* Estilos para el menú de navegación */
+      nav ul {
+        display: flex; /* Muestra los elementos de la lista en línea */
+        list-style: none; /* Elimina los puntos de la lista */
+        padding: 0;
+        margin: 0;
+        flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+        justify-content: center; /* Centra los elementos del menú */
+      }
+
+      nav ul li a {
+        color: white; /* Color de los enlaces */
+        text-decoration: none; /* Sin subrayado */
+        padding: 10px; /* Padding de 10 píxeles para separar */
+        display: block; /* Para que el padding y el hover funcionen bien */
+        border-radius: 0.25rem; /* Pequeño redondeo en los bordes */
+        transition: background-color 0.2s ease-in-out; /* Transición suave para el hover */
+      }
+
+      nav ul li a:hover {
+        background-color: #e74c3c; /* Color de fondo al pasar el mouse */
+      }
+
+      .main-content-area {
+        background-color: #ffffff; /* Color de fondo blanco para el área principal */
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
+
+      /* Modificaciones para las etiquetas section */
+      section {
+        padding: 40px 20px; /* 40px arriba y abajo, 20px a los lados */
+        margin-bottom: 60px; /* Increased bottom margin for more spacing */
+        /* Para centrar las secciones */
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1000px; /* Asegura que no sean más anchas que el contenedor principal si no usas .container directamente en cada section */
+      }
+
+      .section-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 0.5rem;
+        text-align: center; /* Centra el texto de los títulos de sección */
+      }
+      .content-card {
+        background-color: #f4f4f4; /* Nuevo color de fondo gris muy claro */
+        padding: 3rem; /* ¡MODIFICADO AQUÍ! Antes era 2rem. */
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      /* Nuevos estilos para el footer */
+      footer {
+        background-color: #2c3e50; /* Color de fondo elegido */
+        color: white; /* Color de texto blanco */
+        padding: 20px; /* Padding de 20 píxeles */
+        text-align: center; /* Centra el texto del footer */
+      }
+
+      /* Clase .container que envuelve todo el contenido principal */
+      .container {
+        max-width: 1000px; /* Limita el ancho máximo del contenido a 1000px */
+        margin: 0 auto; /* Centra el contenido horizontalmente y quita márgenes verticales automáticos */
+      }
+
+      /* Estilos específicos para la galería */
+      .gallery-grid {
+        display: grid;
+        gap: 1.5rem; /* Espacio entre las imágenes */
+        grid-template-columns: 1fr; /* Una columna por defecto (pilas verticalmente) */
+      }
+
+      @media (min-width: 768px) {
+        /* Para pantallas medianas y grandes (md) */
+        .gallery-grid {
+          grid-template-columns: repeat(
+            3,
+            1fr
+          ); /* 3 columnas en pantallas grandes */
+        }
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 200px; /* Altura fija para las imágenes, puedes ajustar esto */
+        object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+        border-radius: 0.5rem; /* Bordes redondeados para las imágenes */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+      }
+
+      /* Estilos para el Generador de Citas Inspiradoras */
+      .quote-container {
+        background-color: #e6ffe6; /* Un verde muy claro para el fondo */
+        border: 2px solid #8fbc8f; /* Un borde verde más marcado */
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .quote-text {
+        font-family: "Dancing Script", cursive;
+        font-size: 1.5rem;
+        color: #38761d; /* Verde oscuro para la cita */
+        margin-bottom: 10px;
+      }
+
+      .quote-author {
+        font-style: italic;
+        color: #555;
+      }
+
+      .new-quote-button {
+        background-color: #5cb85c; /* Verde llamativo para el botón */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .new-quote-button:hover {
+        background-color: #4cae4c;
+      }
+
+      /* Estilos para la sección de la tienda */
+      #tienda {
+        background-color: #e9ecef; /* Un gris claro para diferenciar la sección */
+      }
+
+      .productos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .producto-card {
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        text-align: center;
+        display: flex; /* Para flexbox interno */
+        flex-direction: column; /* Apilar elementos */
+        justify-content: space-between; /* Espaciar contenido */
+      }
+
+      .producto-card img {
+        max-width: 100%;
+        height: 150px; /* Altura fija para las imágenes de producto */
+        object-fit: contain; /* Asegura que la imagen se vea completa sin cortar */
+        margin: 0 auto 1rem auto; /* Centra la imagen y añade margen inferior */
+        border-radius: 0.25rem;
+      }
+
+      .producto-titulo {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+
+      .producto-precio {
+        color: #28a745; /* Un verde para el precio */
+        font-weight: bold;
+        margin-bottom: 0.75rem;
+      }
+
+      .comprar-boton {
+        background-color: #007bff; /* Azul para el botón de comprar */
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1rem;
+        transition: background-color 0.2s ease-in-out;
+        margin-top: auto; /* Empuja el botón hacia abajo */
+      }
+
+      .comprar-boton:hover {
+        background-color: #0056b3;
+      }
+
+      /* Estilos para la notificación del carrito (se mantiene, pero el sidebar es el principal ahora) */
+      .cart-notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        font-size: 0.9rem;
+      }
+
+      .cart-notification.show {
+        opacity: 1;
+      }
+
+      /* --- Estilos para el Carrito (Sidebar) --- */
+      #cartSidebar {
+        position: fixed;
+        top: 0;
+        right: -350px; /* Oculto por defecto */
+        width: 350px;
+        height: 100%;
+        background-color: #fefefe;
+        box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 2000;
+        transition: right 0.3s ease-in-out;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #cartSidebar.open {
+        right: 0; /* Visible */
+      }
+
+      #cartSidebar h3 {
+        font-size: 1.75rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        color: #333;
+        text-align: center;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+      }
+
+      #cartItemsList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-grow: 1; /* Permite que la lista ocupe el espacio disponible */
+        overflow-y: auto; /* Scroll si hay muchos ítems */
+      }
+
+      #cartItemsList li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        border-bottom: 1px dashed #eee;
+        padding-bottom: 10px;
+        font-size: 0.95rem;
+      }
+
+      #cartItemsList li:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .cart-item-info {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: row; /* Cambiado a row para imagen y texto */
+        align-items: center; /* Alinear verticalmente */
+        gap: 10px; /* Espacio entre imagen y texto */
+      }
+
+      .cart-item-image {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        border-radius: 0.25rem;
+      }
+
+      .cart-item-details {
+        flex-grow: 1; /* El texto ocupa el espacio restante */
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .cart-item-name {
+        font-weight: 600;
+        color: #444;
+      }
+
+      .cart-item-price {
+        color: #28a745;
+        font-weight: bold;
+      }
+
+      .cart-item-controls {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .cart-item-controls button {
+        background-color: #dc3545; /* Rojo para eliminar */
+        color: white;
+        border: none;
+        padding: 5px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: background-color 0.2s ease;
+      }
+
+      .cart-item-controls button:hover {
+        background-color: #c82333;
+      }
+
+      .cart-item-controls input {
+        width: 40px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 5px;
+        font-size: 0.9rem;
+      }
+
+      .cart-summary {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 2px solid #ccc;
+      }
+
+      .cart-summary div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+      }
+
+      .cart-total {
+        font-weight: bold;
+        font-size: 1.3rem;
+        color: #333;
+      }
+
+      #closeCartButton {
+        background-color: #6c757d; /* Gris para cerrar */
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 20px;
+        transition: background-color 0.2s ease;
+      }
+
+      #closeCartButton:hover {
+        background-color: #5a6268;
+      }
+
+      /* Overlay para cuando el carrito está abierto */
+      #cartOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
+      }
+
+      #cartOverlay.show {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="custom-header py-4">
+        <div class="flex flex-col items-center">
+          <h1 class="text-white text-3xl font-bold mb-4">
+            El Huerto en la Azotea
+          </h1>
+          <nav>
+            <ul>
+              <li><a href="#inicio">Inicio</a></li>
+              <li>
+                <a href="#guia-hortelano">Guía del Hortelano Urbano</a>
+              </li>
+              <li>
+                <a href="#cultivos-ciudad">Cultivos en la Ciudad</a>
+              </li>
+              <li>
+                <a href="#proyectos-recetas">Proyectos DIY y Recetas Verdes</a>
+              </li>
+              <li>
+                <a href="#diario-cultivo">Mi Diario de Cultivo</a>
+              </li>
+              <li>
+                <a href="#galeria-huerto">Galería</a>
+              </li>
+              <li>
+                <a href="#tienda">Tienda</a>
+              </li>
+              <li>
+                <a href="#" id="openCartButton">Canasta (0)</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      <div class="main-content-area">
+        <div class="px-4">
+          <h2 class="text-2xl font-semibold text-center mb-2">
+            Bienvenido a la Aventura
+          </h2>
+          <p class="text-gray-600 text-lg text-center mb-8">
+            Cultivando la ciudad, un brote a la vez
+          </p>
+
+          <section class="mb-12 flex justify-center">
+            <div
+              class="bg-gray-200 rounded-lg overflow-hidden shadow-lg w-full md:w-3/4 lg:w-2/3"
+            >
+              <img
+                src="https://images.pexels.com/photos/1076939/pexels-photo-1076939.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                alt="Planta tropical con fondo borroso azul y naranja"
+                class="w-full h-auto object-cover"
+                onerror="this.onerror=null;this.src='https://placehold.co/1200x600/CCCCCC/000000?text=Imagen+no+disponible';"
+              />
+            </div>
+          </section>
+
+          <section class="content-card mb-12 text-center">
+            <h3 class="section-title">Dato Curioso</h3>
+            <button
+              id="factButton"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Revelar Dato Curioso
+            </button>
+            <p id="factParagraph" class="mt-4 text-lg text-gray-800"></p>
+          </section>
+
+          <section class="content-card mb-12">
+            <h3 class="section-title">Generador de Citas Inspiradoras</h3>
+            <div class="quote-container">
+              <blockquote id="quoteText" class="quote-text"></blockquote>
+              <p id="quoteAuthor" class="quote-author"></p>
+              <button id="newQuoteButton" class="new-quote-button">
+                Nueva Cita
+              </button>
+            </div>
+          </section>
+
+          <section id="galeria-huerto" class="content-card">
+            <h3 class="section-title">Nuestra Galería del Huerto</h3>
+            <div class="gallery-grid">
+              <div class="gallery-item">
+                <img
+                  src="https://i.imgur.com/DSQU3J1.jpeg"
+                  alt="Semillero con pequeñas plantas"
+                />
+              </div>
+              <div class="gallery-item">
+                <img
+                  src="https://i.imgur.com/LAzhC7j.png"
+                  alt="Riego de plantas en macetas"
+                />
+              </div>
+              <div class="gallery-item">
+                <img
+                  src="https://i.imgur.com/jlF3cqW.jpeg"
+                  alt="Cosecha de pimientos rojos"
+                />
+              </div>
+            </div>
+          </section>
+          <section id="inicio" class="content-card">
+            <h3 class="section-title">Inicio</h3>
+            <p class="text-lg leading-relaxed text-gray-700">
+              ¡Bienvenido/a a El Huerto en la Azotea! Sumérgete en el
+              emocionante mundo de la jardinería urbana y descubre cómo
+              transformar incluso los espacios más pequeños de tu hogar o azotea
+              en vibrantes oasis verdes. Desde balcones soleados hasta ventanas
+              con encanto, te guiaremos en cada paso para que cultives tus
+              verduras, hierbas aromáticas y flores , aportando frescura y
+              belleza a tu vida. Aquí encontrarás inspiración, consejos
+              prácticos y una comunidad apasionada lista para compartir sus
+              experiencias. ¡Es hora de sembrar, cosechar y disfrutar de la
+              naturaleza en pleno corazón de la ciudad!
+            </p>
+          </section>
+
+          <section id="guia-hortelano" class="content-card">
+            <h3 class="section-title">Guía del Hortelano Urbano</h3>
+            <p class="text-gray-700">
+              Esta sección es tu punto de partida esencial si eres un
+              principiante en el arte de la jardinería urbana. Te ofrecemos
+              tutoriales detallados y fáciles de seguir sobre cómo iniciar tu
+              propio huerto desde cero. Aprenderás a seleccionar las plantas
+              ideales para tu espacio, ya sea un balcón, una azotea o una
+              ventana; elegir los tipos de macetas y sustratos más adecuados
+              para cada cultivo; identificar las herramientas esenciales que
+              facilitarán tu trabajo; y dominar los conceptos básicos de riego y
+              exposición solar para asegurar el óptimo crecimiento de tus
+              plantas. Con nuestros consejos, tu éxito en el huerto está
+              garantizado.
+            </p>
+          </section>
+
+          <section id="cultivos-ciudad" class="content-card">
+            <h3 class="section-title">Cultivos en la Ciudad</h3>
+            <p class="text-gray-700">
+              Explora nuestra exhaustiva biblioteca de plantas , diseñada
+              específicamente para los amantes de la jardinería urbana. Aquí
+              encontrarás una selección de vegetales, frutas y hierbas
+              aromáticas populares y fáciles de cultivar en entornos urbanos.
+              Cada ficha de planta te proporcionará información concisa y
+              crucial sobre sus necesidades específicas: desde la cantidad de
+              luz que requiere, la frecuencia de riego, el espacio necesario
+              para su desarrollo, hasta los cuidados particulares como la poda,
+              la fertilización y la prevención de plagas. Además, te indicaremos
+              el mejor momento para sembrar y cosechar, para que puedas
+              disfrutar de productos frescos directamente de tu propio huerto en
+              la azotea.
+            </p>
+          </section>
+
+          <section id="proyectos-recetas" class="content-card">
+            <h3 class="section-title">Proyectos DIY y Recetas Verdes</h3>
+            <p class="text-gray-700">
+              Despierta tu creatividad y optimiza cada centímetro de tu espacio
+              urbano con nuestras ideas de diseño innovadoras. Aprende a
+              construir jardines verticales impresionantes que maximizan el
+              espacio, crea soluciones de riego caseras y eficientes para un
+              ahorro de agua, y descubre cómo fabricar compostadores urbanos
+              para reducir residuos y enriquecer tu tierra con nutrientes
+              naturales. También, te proponemos proyectos divertidos para hacer
+              con niños, fomentando su conexión con la naturaleza y la
+              importancia de una alimentación saludable. Y lo mejor de todo,
+              ¡prepárate para deleitarte con recetas deliciosas y frescas que
+              podrás preparar directamente con los ingredientes cosechados en tu
+              propio huerto!
+            </p>
+            <div class="mt-8 text-center">
+              <button
+                id="diyTipButton"
+                class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md"
+              >
+                Recibe un Consejo Rápido de Huerto
+              </button>
+              <p
+                id="diyTipParagraph"
+                class="mt-4 text-lg italic text-gray-700"
+              ></p>
+            </div>
+          </section>
+
+          <section id="diario-cultivo" class="content-card">
+            <h3 class="section-title">Mi Diario de Cultivo</h3>
+            <p class="text-gray-700">
+              Mantente al día con las últimas novedades y tendencias en
+              jardinería urbana a través de nuestros artículos dinámicos y
+              actualizados regularmente. En esta sección, compartimos consejos
+              de temporada, soluciones prácticas para problemas comunes como
+              plagas y enfermedades, y exploramos experiencias personales de
+              cultivo que te inspirarán. Si ya eres un jardinero con más
+              experiencia, encontrarás consejos avanzados para llevar tu huerto
+              al siguiente nivel. Además, no te pierdas nuestras entrevistas
+              inspiradoras con otros jardineros urbanos, quienes compartirán sus
+              secretos y pasiones. ¡Anímate a documentar y compartir tus propias
+              historias verdes y forma parte de nuestra creciente comunidad!
+            </p>
+          </section>
+
+          <section id="tienda" class="content-card">
+            <h3 class="section-title">¡Visita nuestra Tienda del Hortelano!</h3>
+            <p class="text-gray-700 text-center mb-4">
+              Encuentra todo lo que necesitas para tu huerto urbano.
+            </p>
+            <div class="productos-grid" id="productosGrid"></div>
+          </section>
+        </div>
+      </div>
+
+      <footer>
+        <div>
+          <p>&copy; 2025 El Huerto en la Azotea</p>
+        </div>
+      </footer>
+
+      <aside id="cartSidebar">
+        <h3>Tu Canasta</h3>
+        <ul id="cartItemsList">
+          <li class="text-center text-gray-500">Tu canasta está vacía.</li>
+        </ul>
+        <div class="cart-summary">
+          <div>Subtotal: <span id="cartSubtotal">$0.00 MXN</span></div>
+          <div class="cart-total">
+            Total: <span id="cartTotal">$0.00 MXN</span>
+          </div>
+        </div>
+        <button id="closeCartButton">Cerrar Canasta</button>
+      </aside>
+
+      <div id="cartOverlay"></div>
+
+      <div id="cartNotification" class="cart-notification"></div>
+    </div>
+
+    <script>
+      // JavaScript para el botón "Revelar Dato Curioso"
+      const factButton = document.getElementById("factButton");
+      const factParagraph = document.getElementById("factParagraph");
+
+      factButton.addEventListener("click", () => {
+        factParagraph.textContent = "¡Los pulpos tienen tres corazones!";
+      });
+
+      // JavaScript para el botón "Recibe un Consejo Rápido de Huerto"
+      const diyTipButton = document.getElementById("diyTipButton");
+      const diyTipParagraph = document.getElementById("diyTipParagraph");
+
+      diyTipButton.addEventListener("click", () => {
+        diyTipParagraph.textContent =
+          "¡Consejo: Reutiliza botellas de plástico para crear un sistema de riego por goteo para tus macetas!";
+      });
+
+      // JavaScript para el Generador de Citas Inspiradoras
+      const quotes = [
+        {
+          text: "La naturaleza siempre viste los colores del espíritu.",
+          author: "Ralph Waldo Emerson",
+        },
+        {
+          text: "Cree en ti mismo y en todo lo que eres. Reconoce que hay algo dentro de ti que es más grande que cualquier obstáculo.",
+          author: "Christian D. Larson",
+        },
+        {
+          text: "El optimismo es la fe que conduce al logro. Nada se puede hacer sin esperanza y confianza.",
+          author: "Helen Keller",
+        },
+        {
+          text: "No esperes las oportunidades extraordinarias. Toma las ocasiones comunes y hazlas grandiosas. Los hombres débiles esperan las oportunidades; los hombres fuertes las crean.",
+          author: "Orison Swett Marden",
+        },
+        {
+          text: "El secreto para salir adelante es comenzar.",
+          author: "Mark Twain",
+        },
+        {
+          text: "La única forma de hacer un gran trabajo es amar lo que haces.",
+          author: "Steve Jobs",
+        },
+        {
+          text: "El futuro pertenece a quienes creen en la belleza de sus sueños.",
+          author: "Eleanor Roosevelt",
+        },
+      ];
+
+      const quoteTextElement = document.getElementById("quoteText");
+      const quoteAuthorElement = document.getElementById("quoteAuthor");
+      const newQuoteButton = document.getElementById("newQuoteButton");
+
+      function getRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        return quotes[randomIndex];
+      }
+
+      function displayQuote() {
+        const currentQuote = getRandomQuote();
+        quoteTextElement.textContent = currentQuote.text;
+        quoteAuthorElement.textContent = `- ${currentQuote.author}`;
+      }
+
+      // Mostrar una cita inicial al cargar la página
+      displayQuote();
+
+      // Evento para el botón de nueva cita
+      newQuoteButton.addEventListener("click", displayQuote);
+
+      // --- Lógica del Carrito ---
+      const products = [
+        {
+          id: 1,
+          name: "Paquete de Semillas Variadas",
+          price: 5.99,
+          image:
+            "https://vinde.com.mx/wp-content/uploads/2023/06/10-sobres-armados-2-1.png",
+        },
+        {
+          id: 2,
+          name: "Set de 3 Macetas de Terracota",
+          price: 12.5,
+          image: "https://m.media-amazon.com/images/I/71VwH0HvOZL.jpg",
+        },
+        {
+          id: 3,
+          name: "Sustrato Orgánico Premium (5L)",
+          price: 8.75,
+          image:
+            "https://http2.mlstatic.com/D_NQ_NP_672852-MLM77407061457_072024-O-sustrato-orquideas-organico-5l-corteza-de-coco-y-agrolita.webp",
+        },
+        {
+          id: 4,
+          name: "Kit Básico de Herramientas de Jardín",
+          price: 19.99,
+          image:
+            "https://http2.mlstatic.com/D_NQ_NP_792461-MLM71171812368_082023-O-kit-estuche-de-herramientas-de-jardineria-12-piezas-acero.webp",
+        },
+        {
+          id: 5,
+          name: "Fertilizante Natural Líquido (1L)",
+          price: 10.2,
+          image:
+            "https://i5.walmartimages.com/asr/731174b0-7581-47b8-a170-ac9ac7d4d0af.3fb3a352787f2f7145e852e24cb2a661.png?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+        },
+        {
+          id: 6,
+          name: "Regadera Ergonómica (2L)",
+          price: 15.0,
+          image:
+            "https://i5.walmartimages.com/asr/1d8b17fa-c0e1-4e07-a979-1bf8ba4912cd.ce1a3df8c18075c6f17acb1a4cd42360.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+        },
+        {
+          id: 7,
+          name: "Compostador Casero Compacto",
+          price: 35.0,
+          image:
+            "https://cdn0.ecologiaverde.com/es/posts/9/5/0/como_hacer_un_compostador_casero_3059_orig.jpg",
+        },
+        {
+          id: 8,
+          name: "Kit de Cultivo de Hongos Ostra",
+          price: 22.0,
+          image: "https://resetea.es/wp-content/uploads/2016/09/Pack-Setas.jpg",
+        },
+        {
+          id: 9,
+          name: "Libro 'Manual Completo del Huerto en Casa'",
+          price: 18.99,
+          image:
+            "https://m.media-amazon.com/images/I/818M93RLBpL._UF894,1000_QL80_.jpg",
+        },
+      ];
+
+      let cartItems = []; // Array para almacenar los productos en la canasta
+
+      const productosGrid = document.getElementById("productosGrid");
+      const cartSidebar = document.getElementById("cartSidebar");
+      const cartItemsList = document.getElementById("cartItemsList");
+      const cartSubtotalElement = document.getElementById("cartSubtotal");
+      const cartTotalElement = document.getElementById("cartTotal");
+      const openCartButton = document.getElementById("openCartButton");
+      const closeCartButton = document.getElementById("closeCartButton");
+      const cartOverlay = document.getElementById("cartOverlay");
+      const cartNotification = document.getElementById("cartNotification"); // Se mantuvo por si quieres usarlo
+
+      // Función para renderizar los productos en la tienda
+      function renderProducts() {
+        productosGrid.innerHTML = ""; // Limpiar la cuadrícula antes de añadir productos
+        products.forEach((product) => {
+          const productCard = document.createElement("div");
+          productCard.classList.add("producto-card");
+          productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h4 class="producto-titulo">${product.name}</h4>
+                    <p class="producto-precio">$${product.price.toFixed(
+                      2
+                    )} MXN</p>
+                    <button class="comprar-boton" data-product-id="${
+                      product.id
+                    }">Comprar</button>
+                `;
+          productosGrid.appendChild(productCard);
+        });
+
+        // Añadir event listeners a los nuevos botones de compra
+        document.querySelectorAll(".comprar-boton").forEach((button) => {
+          button.addEventListener("click", (event) => {
+            const productId = parseInt(event.target.dataset.productId);
+            addToCart(productId);
+          });
+        });
+      }
+
+      // Función para añadir un producto al carrito
+      function addToCart(productId) {
+        const existingItem = cartItems.find((item) => item.id === productId);
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          const productToAdd = products.find(
+            (product) => product.id === productId
+          );
+          if (productToAdd) {
+            cartItems.push({ ...productToAdd, quantity: 1 });
+          }
+        }
+        renderCart();
+        // Descomenta la siguiente línea si quieres la notificación temporal además del sidebar
+        showCartNotification(
+          `${
+            products.find((p) => p.id === productId).name
+          } añadido a la canasta.`
+        );
+      }
+
+      // Función para remover un producto del carrito
+      function removeFromCart(productId) {
+        cartItems = cartItems.filter((item) => item.id !== productId);
+        renderCart();
+      }
+
+      // Función para actualizar la cantidad de un producto en el carrito
+      function updateQuantity(productId, newQuantity) {
+        const item = cartItems.find((item) => item.id === productId);
+        if (item) {
+          item.quantity = Math.max(1, parseInt(newQuantity)); // Asegurarse de que la cantidad sea al menos 1
+          renderCart();
+        }
+      }
+
+      // Función para renderizar los ítems en la barra lateral del carrito
+      function renderCart() {
+        cartItemsList.innerHTML = ""; // Limpiar la lista del carrito
+
+        if (cartItems.length === 0) {
+          cartItemsList.innerHTML =
+            '<li class="text-center text-gray-500">Tu canasta está vacía.</li>';
+        } else {
+          cartItems.forEach((item) => {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `
+                        <div class="cart-item-info">
+                            <img src="${item.image}" alt="${
+              item.name
+            }" class="cart-item-image">
+                            <div class="cart-item-details">
+                                <span class="cart-item-name">${item.name}</span>
+                                <span class="cart-item-price">$${(
+                                  item.price * item.quantity
+                                ).toFixed(2)} MXN</span>
+                            </div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <input type="number" min="1" value="${
+                              item.quantity
+                            }" data-product-id="${
+              item.id
+            }" class="quantity-input">
+                            <button data-product-id="${
+                              item.id
+                            }" class="remove-from-cart-button">Eliminar</button>
+                        </div>
+                    `;
+            cartItemsList.appendChild(listItem);
+          });
+        }
+
+        // Actualizar totales
+        const subtotal = cartItems.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+        const total = subtotal; // Sin impuestos ni envío para simplificar
+
+        cartSubtotalElement.textContent = `$${subtotal.toFixed(2)} MXN`;
+        cartTotalElement.textContent = `$${total.toFixed(2)} MXN`;
+
+        // Actualizar el contador del carrito en el botón del header
+        openCartButton.textContent = `Canasta (${cartItems.length})`;
+
+        // Añadir event listeners para los botones de eliminar y los inputs de cantidad
+        document
+          .querySelectorAll(".remove-from-cart-button")
+          .forEach((button) => {
+            button.addEventListener("click", (event) => {
+              const productId = parseInt(event.target.dataset.productId);
+              removeFromCart(productId);
+            });
+          });
+
+        document.querySelectorAll(".quantity-input").forEach((input) => {
+          input.addEventListener("change", (event) => {
+            const productId = parseInt(event.target.dataset.productId);
+            const newQuantity = parseInt(event.target.value);
+            updateQuantity(productId, newQuantity);
+          });
+        });
+      }
+
+      // Funcionalidad para abrir y cerrar el carrito (sidebar)
+      openCartButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        cartSidebar.classList.add("open");
+        cartOverlay.classList.add("show");
+      });
+
+      closeCartButton.addEventListener("click", () => {
+        cartSidebar.classList.remove("open");
+        cartOverlay.classList.remove("show");
+      });
+
+      cartOverlay.addEventListener("click", () => {
+        cartSidebar.classList.remove("open");
+        cartOverlay.classList.remove("show");
+      });
+
+      // Función para mostrar notificación (opcional, ya que el sidebar es el principal)
+      function showCartNotification(message) {
+        cartNotification.textContent = message;
+        cartNotification.classList.add("show");
+        setTimeout(() => {
+          cartNotification.classList.remove("show");
+        }, 3000);
+      }
+
+      // Inicializar la tienda y el carrito al cargar la página
+      document.addEventListener("DOMContentLoaded", () => {
+        renderProducts();
+        renderCart(); // Para asegurar que el contador del carrito esté correcto al inicio
+      });
+    </script>
+  </body>
+</html>
